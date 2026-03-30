@@ -100,24 +100,21 @@ return concat($base, $path)                 (: Returns xs:anyURI in URI contexts
 `xs:untypedAtomic` values are automatically converted to the target type when used:
 
 ```xquery
-(: === MOST COMMON CASE: Untyped Element to String === :)
+(: === MOST COMMON CASE: Element to String Conversion === :)
 
-(: Schema-less XML element passed to string function - implicit conversion :)
-let $name := <customer>Acme Corp</customer>
-return concat("Customer: ", $name)       (: "Customer: Acme Corp" :)
-                                      (: No string() cast needed! :)
-                                      (: UntypedAtomic → xs:string happens automatically :)
+(: Element node bound to variable - passed to string-expecting function :)
+let $name := <customer>Acme Corp</customer>  (: $name is element customer :)
+return concat("Customer: ", $name)            (: "Customer: Acme Corp" :)
+                                               (: No .text() needed! :)
+                                               (: Element → atomization → xs:untypedAtomic → xs:string :)
 
-(: Element to string via concat (or ||) - same thing :)
-<greeting>Hello</greeting> || ", world"
-                                      (: Returns: "Hello, world" :)
+(: Same thing with || operator :)
+<greeting>Hello</greeting> || ", world"      (: "Hello, world" :)
+                                               (: Element atomizes to xs:untypedAtomic, converts to xs:string :)
 
-(: Another example - untyped attribute to string :)
+(: Attributes also atomize and convert :)
 let $qty := doc('<order qty="100"/>')/order/@qty
-return concat("Quantity: ", $qty)        (: "Quantity: 100" :)
-
-(: Untyped element in numeric context - also implicit :)
-<amount>42</amount> + 8                 (: Returns: 50 (xs:integer) :)
+return concat("Quantity: ", $qty)             (: "Quantity: 100" :)
 ```
 
 **Common untyped conversions:**
