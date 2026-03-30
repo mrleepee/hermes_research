@@ -92,12 +92,21 @@ return concat($base, $path)                 (: Returns xs:anyURI in URI contexts
 
 ### 3. UntypedAtomic Conversion
 
+`xs:untypedAtomic` is the type of **atomic values that have not been assigned a more specific type**. It occurs when:
+- Atomizing text nodes from schema-less XML documents
+- Parsing strings without a known type
+- Certain API returns (e.g., some ODATA or JSON conversions)
+
 `xs:untypedAtomic` values are automatically converted to the target type when used:
 
 ```xquery
-(: Assume $price comes from a schema-less XML document, typed as xs:untypedAtomic :)
-let $price := "19.99"                       (: xs:untypedAtomic :)
+(: Atomizing untyped XML content - the text node becomes xs:untypedAtomic :)
+let $price := xs:untypedAtomic(doc('<price>19.99</price>')/price/text())
 return $price + 0.01                        (: Converts to xs:decimal: 20.00 :)
+
+(: Or atomization from schema-less XML :)
+let $price := doc("sales.xml")/item/price   (: Element with no type, atomizes to xs:untypedAtomic :)
+return $price + 0.01                        (: Promotes to xs:decimal: 20.00 :)
 ```
 
 **Common untyped conversions:**
