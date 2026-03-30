@@ -1,20 +1,21 @@
-# Methylene Blue Research Corpus
+# Hermes Research Corpus
 
-Daily research on methylene blue and its health benefits, with focus on infrared light interaction.
+Multi-topic research repository built by Hermes agent.
 
-## Structure
+## Topics
 
+- `topics/methylene-blue/` — Methylene blue health benefits + IR interaction
+
+## Structure (per topic)
+
+Each topic folder contains:
 - `daily/` — Daily digests (YYYY-MM-DD.md)
 - `sources/` — Raw source links and notes
-- `summaries/` — Formatted summaries by topic
+- `summaries/` — Formatted summaries by subtopic
 - `papers/` — arXiv paper references
 
-## About Methylene Blue
+## Usage
 
-Methylene blue is a phenothiazine dye with documented:
-- Neuroprotective properties
-- Antimalarial activity
-- Antioxidant effects
-- Potential benefits for mitochondrial function
+Daily crons run research searches and save findings. Pull to sync.
 
-Research focus: interaction with infrared light (photobiomodulation, PBM)
+To add a new topic: create folder under `topics/` and set up a new cron job.
